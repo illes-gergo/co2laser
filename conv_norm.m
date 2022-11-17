@@ -1,10 +1,5 @@
-clc;clear;close all;
-workdir = matlab.desktop.editor.getActiveFilename;
-while workdir(end) ~= '\'
-    workdir = workdir(1:end-1);
-end
-cd(workdir(1:end-1));
-
+clc;clear;close all;delete(gcp('nocreate'));
+%parpool("threads");
 
 tic;
 %adatok ki�r�sa file-ba
@@ -107,7 +102,7 @@ Aot = A0t*exp(-2*log(2)*t.^2/tau^2).*exp(1i*(omega0)*t);
 %gamma = 0;
 n_omega = neo(lambda,T,cry);
 k_OMEGA = real(omega.*nTHzo(omega,T,cry)/c);%+1e5;
-k_OMEGA0 = real(omega.*nTHzo(2*pi*nu0,T,cry)/c)
+k_OMEGA0 = real(omega.*nTHzo(2*pi*nu0,T,cry)/c);
 ddk_omega = -ngp0.^2/omega0/c/np0*tan(gamma)^2;
 k_omega = real(1/cos(gamma).*(omega.*n_omega/c+1*(omega-omega0).^2/2.*ddk_omega));%+1e5;
 ddk_omegaSH = -ngpSH.^2/omega0/2/c/npSH*tan(gamma)^2;
@@ -160,7 +155,7 @@ A_komp(1,:,3) = ASH;
 
 %% kezdő komplex térerősségek összeillesztése
 %% diffegyenlet létrehozása
-v6_fgv =@(z,A_kompozit) diffegy(z,A_kompozit,omega,T,k_omega,k_OMEGA,k_omegaSH,khi_eff,dnu,domega,k_omega0,omega0,gamma,cry,simp);
+v6_fgv =@(z,A_kompozit) diffegy_conv(z,A_kompozit,omega,T,k_omega,k_OMEGA,k_omegaSH,khi_eff,dnu,domega,k_omega0,omega0,gamma,cry,simp);
 
 %% diffegyenlet megoldása
 
@@ -180,7 +175,9 @@ for ii = 1:length(z)
 A_komp(1,:,1) = ATHz;
 A_komp(1,:,2) = Aop;
 A_komp(1,:,3) = ASH;
+tic;
 [z2, A_komp] = RK4_M(v6_fgv,dz,(ii-1)*dz,A_komp,(ii+0.1)*dz);
+toc;
 ATHz = A_komp(2,:,1).';
 Aop = A_komp(2,:,2).';
 ASH = A_komp(2,:,3).';

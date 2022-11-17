@@ -8,7 +8,7 @@ k2 = f(T(ii-1)+step/2,Y(ii-1,:,:)+k1*step/2);
 k3 = f(T(ii-1)+step/2,Y(ii-1,:,:)+k2*step/2);
 k4 = f(T(ii-1)+step,Y(ii-1,:,:)+k3*step);
 Y(ii,:,:) =Y(ii-1,:,:) + 1/6*(k1+2*k2+2*k3+k4)*step;
-disp(ii/length(T)*100);
+%disp(ii/length(T)*100);
 end
 if nargout == 1
     varargout{1} = Y;
