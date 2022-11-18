@@ -60,7 +60,7 @@ vfTHz = c./nTHz;
 
 gamma = acos(ngp0/nTHzo(2*pi*nu0,T,cry));
 
-fileID = fopen(strcat(dir_n,'\data.txt'),'w');
+fileID = fopen(strcat(dir_n,'/data.txt'),'w');
 fprintf(fileID,'CO2 lézerben történõ THz-keltés GaAs-ben\n\n');
 fprintf(fileID,'Pumpa hullámhossza: %6.2f um\n',lambda0*1e6);
 fprintf(fileID,'Pumpa intenzitása: %6.2f GW/cm^2\n',I0*1e-13);
@@ -146,8 +146,8 @@ FI = 4*nTHz.^2./(1+nTHz).^2;
 FA = 2*nTHz./(1+nTHz);
 %return;
 
-    dlmwrite(strcat(dir_n,'\PumpInt0.txt'),[t.' np0*e0*c0/2*abs((ifft(Aop)).').^2*omegaMAX^2]);
-    dlmwrite(strcat(dir_n,'\PumpSpec0.txt'),[lambda.' (abs(Aop).').^2]);
+    dlmwrite(strcat(dir_n,'/PumpInt0.txt'),[t.' np0*e0*c0/2*abs((ifft(Aop)).').^2*omegaMAX^2]);
+    dlmwrite(strcat(dir_n,'/PumpSpec0.txt'),[lambda.' (abs(Aop).').^2]);
     
 A_komp(1,:,1) = ATHz;
 A_komp(1,:,2) = Aop0;
@@ -175,9 +175,9 @@ for ii = 1:length(z)
 A_komp(1,:,1) = ATHz;
 A_komp(1,:,2) = Aop;
 A_komp(1,:,3) = ASH;
-tic;
+% tic;
 [z2, A_komp] = RK4_M(v6_fgv,dz,(ii-1)*dz,A_komp,(ii+0.1)*dz);
-toc;
+% toc;
 ATHz = A_komp(2,:,1).';
 Aop = A_komp(2,:,2).';
 ASH = A_komp(2,:,3).';
@@ -250,10 +250,10 @@ ylabel('Intensity (GW/cm^2)');
 drawnow;
 
 if mod(ii,utem)==0
-    dlmwrite(strcat(dir_n,'\PumpInt-',int2str(fix(ii*dz*1e6)),'_um.txt'),[(t).' np0*e0*c0/2*abs((ifft(Aop.*exp(-1i*(k_omega-k_omega0)*z(ii)).'))*omegaMAX).^2]);
-    dlmwrite(strcat(dir_n,'\PumpSpec-',int2str(fix(ii*dz*1e6)),'_um.txt'),[lambda.' abs(Aop).^2]);
-    dlmwrite(strcat(dir_n,'\THzt-',int2str(fix(ii*dz*1e6)),'_um.txt'),[t.' real((ifft(FA.'.*ATHz.*exp(-1i*(k_OMEGA-k_OMEGA0)*z(ii)).')))*omegaMAX]);
-    dlmwrite(strcat(dir_n,'\THzSpec-',int2str(fix(ii*dz*1e6)),'_um.txt'),[nu.' abs(ATHz)]);
+    dlmwrite(strcat(dir_n,'/PumpInt-',int2str(fix(ii*dz*1e6)),'_um.txt'),[(t).' np0*e0*c0/2*abs((ifft(Aop.*exp(-1i*(k_omega-k_omega0)*z(ii)).'))*omegaMAX).^2]);
+    dlmwrite(strcat(dir_n,'/PumpSpec-',int2str(fix(ii*dz*1e6)),'_um.txt'),[lambda.' abs(Aop).^2]);
+    dlmwrite(strcat(dir_n,'/THzt-',int2str(fix(ii*dz*1e6)),'_um.txt'),[t.' real((ifft(FA.'.*ATHz.*exp(-1i*(k_OMEGA-k_OMEGA0)*z(ii)).')))*omegaMAX]);
+    dlmwrite(strcat(dir_n,'/THzSpec-',int2str(fix(ii*dz*1e6)),'_um.txt'),[nu.' abs(ATHz)]);
 end;
 
 end
@@ -264,17 +264,17 @@ c0 = 3e8;
 h = fix(hossz/3600);
 min = fix((hossz-h*3600)/60);
 sec = hossz-h*3600-min*60;
-fileID = fopen(strcat(dir_n,'\data.txt'),'a+');
-fprintf(fileID,'\nSzámítás hossza: %2.0f óra %2.0f perc %2.0f másodperc', h, min, sec);
+fileID = fopen(strcat(dir_n,'/data.txt'),'a+');
+fprintf(fileID,'/nSzámítás hossza: %2.0f óra %2.0f perc %2.0f másodperc', h, min, sec);
 fclose(fileID);
 
 
-    dlmwrite(strcat(dir_n,'\PumpInt.txt'),[(t).' np0*e0*c0/2*abs((ifft(Aop.*exp(-1i*(k_omega-k_omega0)*z(ii)).'))).^2*omegaMAX^2]);
-    dlmwrite(strcat(dir_n,'\PumpSpec.txt'),[lambda.' abs(Aop).^2]);
-    dlmwrite(strcat(dir_n,'\THzt.txt'),[t.' real((ifft(FA.'.*ATHz.*exp(-1i*(k_OMEGA-k_OMEGA0)*z(ii)).')))*omegaMAX]);
-    dlmwrite(strcat(dir_n,'\THzSpec.txt'),[nu.' abs(ATHz)]);
-    dlmwrite(strcat(dir_n,'\efficTHz.txt'),[z.' effic.']);
-    dlmwrite(strcat(dir_n,'\efficSH.txt'),[z.' efficSH.']);
+    dlmwrite(strcat(dir_n,'/PumpInt.txt'),[(t).' np0*e0*c0/2*abs((ifft(Aop.*exp(-1i*(k_omega-k_omega0)*z(ii)).'))).^2*omegaMAX^2]);
+    dlmwrite(strcat(dir_n,'/PumpSpec.txt'),[lambda.' abs(Aop).^2]);
+    dlmwrite(strcat(dir_n,'/THzt.txt'),[t.' real((ifft(FA.'.*ATHz.*exp(-1i*(k_OMEGA-k_OMEGA0)*z(ii)).')))*omegaMAX]);
+    dlmwrite(strcat(dir_n,'/THzSpec.txt'),[nu.' abs(ATHz)]);
+    dlmwrite(strcat(dir_n,'/efficTHz.txt'),[z.' effic.']);
+    dlmwrite(strcat(dir_n,'/efficSH.txt'),[z.' efficSH.']);
 
 
 
