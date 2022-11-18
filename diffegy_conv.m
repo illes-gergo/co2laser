@@ -4,7 +4,7 @@ function out = V5_fgv(z,A_kompozit,omega,T,k_omega,k_OMEGA,k_omegaSH,khi_eff,dnu
 n2 = n2value(cry);
 deff_ = 1*deff(cry);
 c = 3e8;    %m/s
- e0 = 8.854e-12; 
+e0 = 8.854e-12;
 % lambda0 = 1031.8e-9;   %m
 % N = 2*1e4;    %db
 % tau = 150e-15;  %s
@@ -55,21 +55,22 @@ abszorpcio(abszorpcio>1e5) = 1e5;
 ATHz = A_kompozit(1,:,1);
 Aop = A_kompozit(1,:,2);
 ASH = A_kompozit(1,:,3);
-% temp1 = zeros(size(ATHz));
+%temp1 = zeros(size(ATHz));
 [~,I] = max(abs(Aop));
 NN = length(Aop);
 At = ifft(Aop.*exp(-0*1i*(k_omega-k_omega0)*z*1)*2*pi*dnu*length(omega));
 n2pm = fft(1i*e0*omega0*neo(2*pi*3e8/omega0,T,cry)*n2/2*abs(At).^2.*At)/dnu/2/pi/length(omega);
-
+% 
 % for nagy_omega = 2:ceil(10e12/dnu)
 %     temp1(nagy_omega) = -1*abszorpcio(nagy_omega)/2*ATHz(nagy_omega)-1*1i*khi_eff*omega(nagy_omega).^2/2/c^2/k_OMEGA(nagy_omega)...
 %         .*sum(Aop(nagy_omega:end).*conj(Aop(1:end-nagy_omega+1))...
 %         .*exp(-1i*(k_omega(nagy_omega:end)-k_omega(1:end-nagy_omega+1)-k_OMEGA(nagy_omega))*z))*domega;
 % end
 %tic;
-temp1 = conv(flip(conj(Aop).*exp(1i.*k_omega.*z)),(Aop.*exp(-1i*k_omega.*z)),"full");
-temp1 = temp1(NN:end).*exp(1i.*k_OMEGA.*z).*(-1.*1i.*khi_eff.*omega.^2/2/c^2./k_OMEGA).*domega-1.*abszorpcio/2.*ATHz;
-temp1(1) = 0;
+temp11 = conv(flip(conj(Aop).*exp(1i.*k_omega.*z)),(Aop.*exp(-1i*k_omega.*z)),"full");
+temp11 = temp11(NN:end).*exp(1i.*k_OMEGA.*z).*(-1.*1i.*khi_eff.*omega.^2/2/c^2./k_OMEGA).*domega-1.*abszorpcio/2.*ATHz;
+temp11(1) = 0;
+temp1 = temp11;
 %toc;
 % close all;
 % CHECK = temp1-temp11;
@@ -91,10 +92,10 @@ temp1(1) = 0;
 % drawnow;
 % tic;
 % temp2 = zeros(size(temp1));
-% 
-% %for kis_omega = I-1000:I+1000
-% %for kis_omega = 1:end(omega)
-% %gamma = 0;
+% %
+% % %for kis_omega = I-1000:I+1000
+% % %for kis_omega = 1:end(omega)
+% % %gamma = 0;
 % for kis_omega = I-simp:I+simp
 % %+n2pm(kis_omega)
 %     temp2(kis_omega) = -1*n2pm(kis_omega) -1*1i*khi_eff*omega(kis_omega).^2/2/c^2/k_omega(kis_omega)*(sum(Aop(kis_omega:end-1).*conj(ATHz(1:end-kis_omega))...
@@ -113,9 +114,29 @@ temp22 = temp22(1:NN).*exp(1i.*k_omega.*z);
 temp20 = -1*n2pm -1*1i*khi_eff.*omega.^2/2/c^2./k_omega.*(temp21+temp22).*domega;
 %temp20(1) = 0;
 temp23 = conv(flip(conj(Aop).*exp(1i.*k_omega.*z.*cos(gamma).^2)),ASH.*exp(-1i.*k_omegaSH.*z.*cos(gamma).^2)).*domega;
-temp23 = -1*cos(gamma).*1i.*deff_.*omega.^2/c^2./k_omega.*temp23(NN:end);
-temp2 = temp20+temp23;
-temp2(1) = 0;
+temp23 = -1*cos(gamma).*1i.*deff_.*omega.^2/c^2./k_omega.*temp23(NN:end).*exp(1i.*k_omega.*z.*cos(gamma).^2);
+temp24 = temp20+temp23;
+temp24(1) = 0;
+temp2 = temp24;
+% close all;
+% CHECK = temp2-temp24;
+% subplot(2,2,1);
+% plot(real(CHECK)./real(temp2));
+% subplot(2,2,2);
+% plot(imag(CHECK)./imag(temp2));
+% subplot(2,2,3)
+% plot(real(temp2));
+% hold on
+% plot(real(temp24));
+% hold off;
+% subplot(2,2,4)
+% plot(imag(temp2));
+% hold on
+% plot(imag(temp24));
+% hold off;
+% 
+% drawnow;
+% 
 %toc;
 %temp3 = zeros(size(temp1));
 
