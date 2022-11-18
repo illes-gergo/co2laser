@@ -1,4 +1,4 @@
-function out = V5_fgv(z,A_kompozit,omega,T,k_omega,k_OMEGA,k_omegaSH,khi_eff,dnu,domega,k_omega0,omega0,gamma,cry,simp)
+function out = diffegy_conv(z,A_kompozit,omega,T,k_omega,k_OMEGA,k_omegaSH,khi_eff,dnu,domega,k_omega0,omega0,gamma,cry,simp)
 
 % T = 100;    %K
 n2 = n2value(cry);
@@ -91,11 +91,11 @@ temp1 = temp11;
 % 
 % drawnow;
 % tic;
-% temp2 = zeros(size(temp1));
-% %
-% % %for kis_omega = I-1000:I+1000
-% % %for kis_omega = 1:end(omega)
-% % %gamma = 0;
+temp2 = zeros(size(temp1));
+%
+% %for kis_omega = I-1000:I+1000
+% %for kis_omega = 1:end(omega)
+% %gamma = 0;
 % for kis_omega = I-simp:I+simp
 % %+n2pm(kis_omega)
 %     temp2(kis_omega) = -1*n2pm(kis_omega) -1*1i*khi_eff*omega(kis_omega).^2/2/c^2/k_omega(kis_omega)*(sum(Aop(kis_omega:end-1).*conj(ATHz(1:end-kis_omega))...
@@ -138,22 +138,45 @@ temp2 = temp24;
 % drawnow;
 % 
 %toc;
-%temp3 = zeros(size(temp1));
-
+% temp3 = zeros(size(temp1));
+% 
 % for kis_omega = 2*I-simp:2*I+simp
 % %+n2pm(kis_omega)
 %     temp3(kis_omega) = -1*cos(gamma)*1i*deff_*omega(kis_omega).^2/2/c^2/k_omega(kis_omega)*sum(Aop(1:kis_omega).*(Aop(kis_omega:-1:1))...
 %         .*exp(-1i*(k_omega(1:kis_omega)-k_omegaSH(kis_omega)+k_omega(kis_omega:-1:1))*z*cos(gamma)^2))*domega;
 % end
-%tic;
-temp3 = conv(Aop.*exp(-1i.*k_omega.*z*cos(gamma)^2),Aop.*exp(-1i.*k_omega.*z*cos(gamma)^2))*domega;
-temp3 =  -1*cos(gamma)*1i*deff_.*omega.^2/2/c^2./k_omega.*temp3(1:NN).*exp(1i.*k_omegaSH.*z.*cos(gamma).^2);
-temp3(1) = 0;
+% tic;
+temp31 = conv(Aop.*exp(-1i.*k_omega.*z*cos(gamma)^2),Aop.*exp(-1i.*k_omega.*z*cos(gamma)^2))*domega;
+temp31 =  -1*cos(gamma)*1i*deff_.*omega.^2/2/c^2./k_omega.*temp31(1:NN).*exp(1i.*k_omegaSH.*z.*cos(gamma).^2);
+temp31(1) = 0;
+temp3 = temp31;
 %toc;
+
+% close all;
+% CHECK = temp3-temp31;
+% subplot(2,2,1);
+% plot(real(CHECK)./real(temp3));
+% subplot(2,2,2);
+% plot(imag(CHECK)./imag(temp3));
+% subplot(2,2,3)
+% plot(real(temp3));
+% hold on
+% plot(real(temp31));
+% hold off;
+% subplot(2,2,4)
+% plot(imag(temp3));
+% hold on
+% plot(imag(temp31));
+% hold off;
+% 
+% drawnow;
+% 
+
 out = zeros(1,length(omega),3);
 out(1,:,1) = temp1;
 out(1,:,2) = temp2;
 out(1,:,3) = temp3;
+
 end
 
 % temp1 = flip(conv(conj(Aop).*exp(1i.*k_omega.*z),(flip(Aop.*exp(1i*k_omega.*z))),"full"));
