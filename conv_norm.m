@@ -1,6 +1,9 @@
 clc;clear;close all;delete(gcp('nocreate'));
 %parpool("threads");
 
+z_ARRAY = [2,4,8]*1e-3;
+for ITER = 1:length(z_ARRAY)
+    clearvars("-except","ITER","z_ARRAY")
 tic;
 %adatok kiírása file-ba
 dir_n = strrep(strrep(datestr(datetime), ' ', '_'),':','.');
@@ -13,8 +16,8 @@ c = 3e8;    %m/s
 c0 = 3e8;
 lambda0 = 10.6e-6;   %m
 N = 4*1e4;    %db
-tau = 500e-15;  %s
-I0 = 50e13;%100/sqrt(tau/100e-15)*1e13;    %GW/cm^2
+tau = 1.75e-12;  %s
+I0 = 25e13;%100/sqrt(tau/100e-15)*1e13;    %GW/cm^2
 %I0 = 100e13;
 khi_eff =   2*deffTHz(cry);%78.4e-12;%2*65.6e-12;%360e-12; %pm/V;
 e0 = 8.854e-12;  %F*m^2
@@ -24,7 +27,8 @@ simp = 1100;
 
 
 dz = 0.5e-5;
-z_vegso = 4e-3;
+%z_vegso = 4e-3;
+z_vegso=z_ARRAY(ITER);
 z = 0:dz:z_vegso;
 omega0 = 2*pi*c/lambda0;
 
@@ -33,7 +37,7 @@ elochirp = 1*z_vegso/2;
 utem = fix(length(z)/10);
 if utem == 0 
     utem = 1;
-end;
+end
 
 
 omegaMAX = 5*2*omega0;%5e14*2*pi;
@@ -93,7 +97,7 @@ fprintf(fileID,'Számítás idõpontja: %s\n',dir_n);
 
 %A0 = sqrt(2*I0/neo(lambda0,T,cry)/e0/c)*tau/(2*sqrt(2*pi*log(2)));
 A0t = sqrt(2*I0/neo(lambda0,T,cry)/e0/c);
-Aot = A0t*exp(-2*log(2)*t.^2/tau^2).*exp(1i*(omega0)*t);
+%Aot = A0t*exp(-2*log(2)*t.^2/tau^2).*exp(1i*(omega0)*t);
 %Aop = fft(Aot)*dt/2/pi;
 %Aop = Aop.*exp(1i*2*2200e-30/2*(omega-omega0).^2);
 %Aop = A0*exp(-((omega-omega0).^2/deltaOmega.^2));
@@ -259,7 +263,7 @@ end;
 end
 
 hossz = toc;
-c0 = 3e8;
+
 
 h = fix(hossz/3600);
 min = fix((hossz-h*3600)/60);
@@ -280,4 +284,4 @@ fclose(fileID);
 
 
 
-
+end
