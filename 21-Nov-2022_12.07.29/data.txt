@@ -24,3 +24,4 @@ Térbeli lépések száma: 801 (dz = 5.0000006.2 um)
 Spektrális felbontás: 40000 (d_nu = 7.0754726.2 GHz)
 Spektrális tartomány: (Nu_max=) Időbeli felbontás: 40000 (d_t = 3.5333336.2 fs)
 Időbeli tartomány: (T_max=) Számítás időpontja: 21-Nov-2022_12.07.29
+/nSzámítás hossza:  4 óra 43 perc 20 másodperc

@@ -1,7 +1,7 @@
 clc;clear;close all;delete(gcp('nocreate'));
 %parpool("threads");
 
-z_ARRAY = [4]*1e-3;
+z_ARRAY = [2,4,8]*1e-3;
 for ITER = 1:length(z_ARRAY)
     clearvars("-except","ITER","z_ARRAY")
 tic;
@@ -16,7 +16,7 @@ c = 3e8;    %m/s
 c0 = 3e8;
 lambda0 = 10.6e-6;   %m
 N = 4*1e4;    %db
-tau = 1e-12;  %s
+tau = 1.75e-12;  %s
 I0 = 100e13;%100/sqrt(tau/100e-15)*1e13;    %GW/cm^2
 %I0 = 100e13;
 khi_eff =   2*deffTHz(cry);%78.4e-12;%2*65.6e-12;%360e-12; %pm/V;
