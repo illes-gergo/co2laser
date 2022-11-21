@@ -91,8 +91,8 @@ temp1 = temp11;
 % 
 % drawnow;
 % tic;
-temp2 = zeros(size(temp1));
-%
+% temp2 = zeros(size(temp1));
+% %
 % %for kis_omega = I-1000:I+1000
 % %for kis_omega = 1:end(omega)
 % %gamma = 0;
@@ -106,13 +106,13 @@ temp2 = zeros(size(temp1));
 %         .*exp(-1i*(k_omegaSH(kis_omega:end-1)-k_omega(kis_omega)-k_omega(1:end-kis_omega))*z*cos(gamma)^2))*domega;
 % end
 % toc;
-%tic;
-temp21 = conv(flip(conj(ATHz).*exp(-1i.*k_OMEGA.*z)),Aop.*exp(-1i.*k_omega.*z));
+% tic;
+temp21 = conv(flip(conj(ATHz).*exp(1i.*k_OMEGA.*z)),Aop.*exp(-1i.*k_omega.*z));
 temp21 = temp21(NN:end).*exp(1i.*k_omega.*z);
 temp22 = conv(Aop.*exp(-1i.*k_omega.*z),ATHz.*exp(-1i.*k_OMEGA.*z));
 temp22 = temp22(1:NN).*exp(1i.*k_omega.*z);
 temp20 = -1*n2pm -1*1i*khi_eff.*omega.^2/2/c^2./k_omega.*(temp21+temp22).*domega;
-%temp20(1) = 0;
+temp20(1) = 0;
 temp23 = conv(flip(conj(Aop).*exp(1i.*k_omega.*z.*cos(gamma).^2)),ASH.*exp(-1i.*k_omegaSH.*z.*cos(gamma).^2)).*domega;
 temp23 = -1*cos(gamma).*1i.*deff_.*omega.^2/c^2./k_omega.*temp23(NN:end).*exp(1i.*k_omega.*z.*cos(gamma).^2);
 temp24 = temp20+temp23;

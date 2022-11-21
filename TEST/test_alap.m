@@ -1,7 +1,7 @@
 
 %%
 clc;clear;close all;
-N = 1E5;
+N = 1E4;
 Aop1 = rand(1,N)+1i*rand(1,N);
 Aop2 = rand(1,N)+1i*rand(1,N);
 eredmeny1 = zeros(1,N);
