@@ -58,8 +58,9 @@ ASH = A_kompozit(1,:,3);
 %temp1 = zeros(size(ATHz));
 [~,I] = max(abs(Aop));
 NN = length(Aop);
-At = ifft(Aop.*exp(-0*1i*(k_omega-k_omega0)*z*1)*2*pi*dnu*length(omega));
-n2pm = fft(1i*e0*omega0*neo(2*pi*3e8/omega0,T,cry)*n2/2*abs(At).^2.*At)/dnu/2/pi/length(omega);
+At = ifft(Aop.*exp(-1i*(k_omega)*z)*2*pi*dnu*length(omega));
+At2  = ifft(Aop*2*pi*dnu*length(omega));
+n2pm = fft(1i*e0*omega0*neo(2*pi*3e8/omega0,T,cry)*n2/2*abs(At).^2.*At2)/dnu/2/pi/length(omega);
 % 
 % for nagy_omega = 2:ceil(10e12/dnu)
 %     temp1(nagy_omega) = -1*abszorpcio(nagy_omega)/2*ATHz(nagy_omega)-1*1i*khi_eff*omega(nagy_omega).^2/2/c^2/k_OMEGA(nagy_omega)...

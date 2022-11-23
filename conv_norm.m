@@ -1,9 +1,9 @@
 clc;clear;close all;delete(gcp('nocreate'));
 %parpool("threads");
 
-z_ARRAY = [2,4,8]*1e-3;
-for ITER = 1:length(z_ARRAY)
-    clearvars("-except","ITER","z_ARRAY")
+%z_ARRAY = [2,4,8]*1e-3;
+%for ITER = 1:length(z_ARRAY)
+%    clearvars("-except","ITER","z_ARRAY")
 tic;
 %adatok kiírása file-ba
 dir_n = strrep(strrep(datestr(datetime), ' ', '_'),':','.');
@@ -28,7 +28,7 @@ simp = 1100;
 
 dz = 0.5e-5;
 %z_vegso = 4e-3;
-z_vegso=z_ARRAY(ITER);
+z_vegso=8e-3%z_ARRAY(ITER);
 z = 0:dz:z_vegso;
 omega0 = 2*pi*c/lambda0;
 
@@ -284,4 +284,4 @@ fclose(fileID);
 
 
 
-end
+%end
