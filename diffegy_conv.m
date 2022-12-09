@@ -56,10 +56,10 @@ ATHz = A_kompozit(1,:,1);
 Aop = A_kompozit(1,:,2);
 ASH = A_kompozit(1,:,3);
 %temp1 = zeros(size(ATHz));
-[~,I] = max(abs(Aop));
+%[~,I] = max(abs(Aop));
 NN = length(Aop);
-At = ifft(Aop.*exp(-1i*(k_omega)*z)*2*pi*dnu*length(omega));
-%At2  = ifft(Aop*2*pi*dnu*length(omega));
+At = ifft(Aop)*2*pi*dnu*length(omega);
+At2  = ifft(Aop*2*pi*dnu*length(omega));
 n2pm = fft(1i*e0*omega0*neo(2*pi*3e8/omega0,T,cry)*n2/2*abs(At).^2.*At2)/dnu/2/pi/length(omega).*exp(1i.*k_omega.*z);
 % 
 % for nagy_omega = 2:ceil(10e12/dnu)
