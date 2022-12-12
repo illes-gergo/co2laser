@@ -7,7 +7,7 @@ clc;clear;close all;delete(gcp('nocreate'));
 tic;
 %adatok kiírása file-ba
 %dir_n = strrep(strrep(datestr(datetime), ' ', '_'),':','.');
-dir_n = "01_csak_OR_SPM_SHG"
+dir_n = "01_csak_OR"
 mkdir(dir_n);
 
 cry = 4; % 4 - GaAs  7 - ZnSe  2 - ZnTe
@@ -27,9 +27,9 @@ deltanu = nu0; %1e12;
 simp = 1100;
 
 
-dz = 0.1e-5;
+dz = 0.5e-5;
 %z_vegso = 4e-3;
-z_vegso=4e-3%z_ARRAY(ITER);
+z_vegso=4e-3;%z_ARRAY(ITER);
 z = 0:dz:z_vegso;
 omega0 = 2*pi*c/lambda0;
 

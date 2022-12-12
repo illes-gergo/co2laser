@@ -2,7 +2,7 @@ CO2 lézerben történő THz-keltés GaAs-ben
 
 Pumpa hullámhossza:  10.60 um
 Pumpa intenzitása: 100.00 GW/cm^2
-Pumpa FL félértékszélessége:   1.75 ps
+Pumpa FL félértékszélessége:   1.00 ps
 Fázisillesztési frekvencia (impulzusfrontdöntéssel):   1.50 THz
 Impulzusfrontdöntés:  22.82 °
 
@@ -23,5 +23,5 @@ Nemlineáris törésmutató (n2): 0.00005900 cm^2/GW
 Térbeli lépések száma: 801 (dz = 5.0000006.2 um)
 Spektrális felbontás: 40000 (d_nu = 7.0754726.2 GHz)
 Spektrális tartomány: (Nu_max=) Időbeli felbontás: 40000 (d_t = 3.5333336.2 fs)
-Időbeli tartomány: (T_max=) Számítás időpontja: csak_OR_SHG
-/nSzámítás hossza:  0 óra 33 perc 14 másodperc
+Időbeli tartomány: (T_max=) Számítás időpontja: 01_csak_OR_SHG
+/nSzámítás hossza:  0 óra 31 perc 50 másodperc

@@ -16,7 +16,7 @@ ASH = A_kompozit(1,:,3);
 [~,I] = max(abs(Aop));
 NN = length(Aop);
 At = ifft(Aop.*exp(-0*1i*(k_omega-k_omega0)*z*1)*2*pi*dnu*length(omega));
-n2pm = fft(1i*e0*omega0*neo(2*pi*3e8/omega0,T,cry)*n2/2*abs(At).^2.*At)/dnu/2/pi/length(omega);
+n2pm = 0*fft(1i*e0*omega0*neo(2*pi*3e8/omega0,T,cry)*n2/2*abs(At).^2.*At)/dnu/2/pi/length(omega);
 
 % 
 % for nagy_omega = 2:ceil(10e12/dnu)
@@ -133,7 +133,7 @@ temp3 = temp31;
 out = zeros(1,length(omega),3);
 out(1,:,1) = temp1;
 out(1,:,2) = temp2;
-out(1,:,3) = temp3;
+out(1,:,3) = temp3*0;
 
 end
 
