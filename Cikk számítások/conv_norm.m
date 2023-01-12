@@ -8,7 +8,7 @@ tic;
 cases = [[2e-3;100e13],[4e-3;100e13],[4e-3;50e13],[4e-3;25e13],[8e-3;25e13]];
 parfor ITER = 1:length(cases)
 %adatok kiírása file-ba
-dir_n = strrep(strrep(datestr(datetime), ' ', '_'),':','.');
+dir_n = convertCharsToStrings(strrep(strrep(datestr(datetime), ' ', '_'),':','.'));
 dir_n = num2str(ITER)+dir_n;
 mkdir(dir_n);
 cry = 4; % 4 - GaAs  7 - ZnSe  2 - ZnTe
@@ -217,13 +217,13 @@ title('THz amplitude spectrum');
 xlabel('Frequency (THz)');
 
 subplot(2,4,5);
-b = plot(z(1:ii)*1e3,effic*100);
+b = plot(z(1:ii)*1e3,effic(1:ii)*100);
 title('Efficiency (%)');
 xlabel('Crystal length (mm)');
 
 
 subplot(2,4,6);
-b = plot(z(1:ii)*1e3,efficSH*100);
+b = plot(z(1:ii)*1e3,efficSH(1:ii)*100);
 title('SH-Efficiency (%)');
 xlabel('Crystal length (mm)');
 
@@ -282,9 +282,6 @@ fclose(fileID);
     dlmwrite(strcat(dir_n,'/THzSpec.txt'),[nu.' abs(ATHz)]);
     dlmwrite(strcat(dir_n,'/efficTHz.txt'),[z.' effic.']);
     dlmwrite(strcat(dir_n,'/efficSH.txt'),[z.' efficSH.']);
-
-
-
 
 
 end
