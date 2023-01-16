@@ -1,0 +1,27 @@
+CO2 lézerben történő THz-keltés GaAs-ben
+
+Pumpa hullámhossza:  10.60 um
+Pumpa intenzitása:  50.00 GW/cm^2
+Pumpa FL félértékszélessége:   1.75 ps
+Fázisillesztési frekvencia (impulzusfrontdöntéssel):   1.50 THz
+Impulzusfrontdöntés:  22.82 °
+
+Kristály anyaga: GaAs
+Kristályhossz:   4.00 mm
+Kristály hőmérséklete: 300
+Pumpa fázis törésmutatója 10600.00 nm-es hullámhosszon: 3.2707
+Pumpa csoport törésmutatója 10600.00 nm-es hullámhosszon: 3.3323
+Másodharmonikus fázis törésmutatója 5300.00 nm-es hullámhosszon: 3.2957
+Másodharmonikus csoport törésmutatója 5300.00 nm-es hullámhosszon: 3.3204
+THz fázis törésmutatója   1.50 THz-es frekvencián: 3.6154
+Nemlineáris szuszceptibilitás (Chi_eff):  97.80 pm/V
+
+Nemlineáris együttható (d_eff):  65.60 pm/V
+
+Nemlineáris törésmutató (n2): 0.00005900 cm^2/GW
+
+Térbeli lépések száma: 801 (dz = 5.0000006.2 um)
+Spektrális felbontás: 40000 (d_nu = 7.0754726.2 GHz)
+Spektrális tartomány: (Nu_max=) Időbeli felbontás: 40000 (d_t = 3.5333336.2 fs)
+Időbeli tartomány: (T_max=) Számítás időpontja: 312-Jan-2023_14.38.19
+/nSzámítás hossza:  0 óra 42 perc 15 másodperc

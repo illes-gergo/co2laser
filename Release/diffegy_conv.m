@@ -58,9 +58,9 @@ ASH = A_kompozit(1,:,3);
 %temp1 = zeros(size(ATHz));
 [~,I] = max(abs(Aop));
 NN = length(Aop);
-At = ifft(Aop.*exp(-1i*(k_omega)*z)*2*pi*dnu*length(omega));
+At = ifft(Aop.*exp(-0i*(k_omega)*z)*2*pi*dnu*length(omega));
 %At2  = ifft(Aop*2*pi*dnu*length(omega));
-n2pm = fft(1i*e0*omega0*neo(2*pi*3e8/omega0,T,cry)*n2/2*abs(At).^2.*At2)/dnu/2/pi/length(omega).*exp(1i.*k_omega.*z);
+n2pm = fft(1i*e0*omega0*neo(2*pi*3e8/omega0,T,cry)*n2/2*abs(At).^2.*At)/dnu/2/pi/length(omega).*exp(0i.*k_omega.*z);
 % 
 % for nagy_omega = 2:ceil(10e12/dnu)
 %     temp1(nagy_omega) = -1*abszorpcio(nagy_omega)/2*ATHz(nagy_omega)-1*1i*khi_eff*omega(nagy_omega).^2/2/c^2/k_OMEGA(nagy_omega)...
@@ -68,7 +68,7 @@ n2pm = fft(1i*e0*omega0*neo(2*pi*3e8/omega0,T,cry)*n2/2*abs(At).^2.*At2)/dnu/2/p
 %         .*exp(-1i*(k_omega(nagy_omega:end)-k_omega(1:end-nagy_omega+1)-k_OMEGA(nagy_omega))*z))*domega;
 % end
 %tic;
-temp11 = conv(flip(conj(Aop).*exp(1i.*k_omega.*z)),(Aop.*exp(-1i*k_omega.*z)),"full");
+temp11 = conv(flip(conj(Aop).*exp(1i.*k_omega.*z)),(Aop.*exp(-1i*k_omega.*z)));
 temp11 = temp11(NN:end).*exp(1i.*k_OMEGA.*z).*(-1.*1i.*khi_eff.*omega.^2/2/c^2./k_OMEGA).*domega-1.*abszorpcio/2.*ATHz;
 temp11(1) = 0;
 temp1 = temp11;

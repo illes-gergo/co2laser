@@ -5,11 +5,11 @@ clc;clear;close all;delete(gcp('nocreate'));
 %for ITER = 1:length(z_ARRAY)
 %    clearvars("-except","ITER","z_ARRAY")
 tic;
-cases = [[2e-3;100e13],[4e-3;100e13],[4e-3;50e13],[4e-3;25e13],[8e-3;25e13]];
-parfor ITER = 1:length(cases)
+%cases = 1750
+%for ITER = 1:length(cases)
 %adatok kiírása file-ba
 dir_n = convertCharsToStrings(strrep(strrep(datestr(datetime), ' ', '_'),':','.'));
-dir_n = num2str(ITER)+dir_n;
+%dir_n = num2str(ITER)+dir_n;
 mkdir(dir_n);
 cry = 4; % 4 - GaAs  7 - ZnSe  2 - ZnTe
 
@@ -18,8 +18,8 @@ c = 3e8;    %m/s
 c0 = 3e8;
 lambda0 = 10.6e-6;   %m
 N = 4*1e4;    %db
-tau = 1.75e-12;  %s
-I0 = cases (2,ITER);%100e13;%100/sqrt(tau/100e-15)*1e13;    %GW/cm^2
+tau = 1500*1e-15;%1.75e-12;  %s
+I0 = 25e13;%100/sqrt(tau/100e-15)*1e13;    %GW/cm^2
 %I0 = 100e13;
 khi_eff =   2*deffTHz(cry);%78.4e-12;%2*65.6e-12;%360e-12; %pm/V;
 e0 = 8.854e-12;  %F*m^2
@@ -30,7 +30,7 @@ simp = 1100;
 
 dz = 0.5e-5;
 %z_vegso = 4e-3;
-z_vegso= cases(1,ITER);%8e-3;
+z_vegso= 8e-3;
 z = 0:dz:z_vegso;
 omega0 = 2*pi*c/lambda0;
 
@@ -284,4 +284,4 @@ fclose(fileID);
     dlmwrite(strcat(dir_n,'/efficSH.txt'),[z.' efficSH.']);
 
 
-end
+%end

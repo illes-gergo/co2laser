@@ -1,0 +1,3 @@
+function DataBaseWriter(DataBaseName,z,t,Aop,Eop,ATHz,ETHz)
+h5create(DataBaseName,"/"+num2str(z*1e6)+"/")
+end
