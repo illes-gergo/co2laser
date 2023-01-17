@@ -3,6 +3,7 @@ classdef db_eval_exported < matlab.apps.AppBase
     % Properties that correspond to app components
     properties (Access = public)
         UIFigure                 matlab.ui.Figure
+        SnapshotButton           matlab.ui.control.Button
         ZumEditField             matlab.ui.control.NumericEditField
         ZumEditFieldLabel        matlab.ui.control.Label
         ReadDBFileButton         matlab.ui.control.Button
@@ -28,6 +29,7 @@ classdef db_eval_exported < matlab.apps.AppBase
         nu;
         c0 = 3e8;
         lambda;
+        fileDirs;
 
         %% Plots
         plot1;
@@ -51,6 +53,7 @@ classdef db_eval_exported < matlab.apps.AppBase
             clc;
             %c0 = 3e8;
             app.fileSTR = strcat(fileLoc,fileName);
+            app.fileDirs = fileLoc;
             app.z = h5read(app.fileSTR,"/z")*1e6;
             app.t = h5read(app.fileSTR,"/t")*1e12;
             app.nu= h5read(app.fileSTR,"/nu")*1e-12;
@@ -116,6 +119,22 @@ classdef db_eval_exported < matlab.apps.AppBase
             app.ZumSlider.Value = value;
             ZumSliderValueChanged(app,event)
             app.ZumEditField.Value = app.ZumSlider.Value;
+        end
+
+        % Button pushed function: SnapshotButton
+        function SnapshotButtonPushed(app, event)
+            z_current = app.ZumSlider.Value;
+            ETHz = h5read(app.fileSTR,"/"+num2str(z_current)+"/ETHz")/1e5;
+            ATHz = normalize(h5read(app.fileSTR,"/"+num2str(z_current)+"/ATHz"),"range");
+            Eop = h5read(app.fileSTR,"/"+num2str(z_current)+"/Eop")/1e13;
+            Aop = normalize(h5read(app.fileSTR,"/"+num2str(z_current)+"/Aop"),"range");
+            writematrix([app.z(:),app.effic(:)],[app.fileDirs,'/effic.txt']);
+            dir = [app.fileDirs,'/Snapshot_',num2str(z_current),'_um'];
+            mkdir(dir);
+            writematrix([app.t(:),ETHz(:)],[dir,'/ETHz']);
+            writematrix([app.t(:),Eop(:)],[dir,'/Eop']);
+            writematrix([app.nu(:),ATHz(:)],[dir,'/ATHz']);
+            writematrix([app.nu(:),Aop(:)],[dir,'/Aop']);
         end
     end
 
@@ -209,19 +228,25 @@ classdef db_eval_exported < matlab.apps.AppBase
             % Create ReadDBFileButton
             app.ReadDBFileButton = uibutton(app.UIFigure, 'push');
             app.ReadDBFileButton.ButtonPushedFcn = createCallbackFcn(app, @ReadDBFileButtonPushed, true);
-            app.ReadDBFileButton.Position = [820 36 100 23];
+            app.ReadDBFileButton.Position = [855 36 100 23];
             app.ReadDBFileButton.Text = 'Read DB File';
 
             % Create ZumEditFieldLabel
             app.ZumEditFieldLabel = uilabel(app.UIFigure);
             app.ZumEditFieldLabel.HorizontalAlignment = 'right';
-            app.ZumEditFieldLabel.Position = [589 27 44 22];
+            app.ZumEditFieldLabel.Position = [678 36 44 22];
             app.ZumEditFieldLabel.Text = 'Z  (um)';
 
             % Create ZumEditField
             app.ZumEditField = uieditfield(app.UIFigure, 'numeric');
             app.ZumEditField.ValueChangedFcn = createCallbackFcn(app, @ZumEditFieldValueChanged, true);
-            app.ZumEditField.Position = [648 27 100 22];
+            app.ZumEditField.Position = [737 36 100 22];
+
+            % Create SnapshotButton
+            app.SnapshotButton = uibutton(app.UIFigure, 'push');
+            app.SnapshotButton.ButtonPushedFcn = createCallbackFcn(app, @SnapshotButtonPushed, true);
+            app.SnapshotButton.Position = [559 35 100 23];
+            app.SnapshotButton.Text = 'Snapshot';
 
             % Show the figure after all components are created
             app.UIFigure.Visible = 'on';
