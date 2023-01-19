@@ -134,7 +134,8 @@ classdef db_eval_exported < matlab.apps.AppBase
             writematrix([app.t(:),ETHz(:)],[dir,'/ETHz']);
             writematrix([app.t(:),Eop(:)],[dir,'/Eop']);
             writematrix([app.nu(:),ATHz(:)],[dir,'/ATHz']);
-            writematrix([app.nu(:),Aop(:)],[dir,'/Aop']);
+            writematrix([app.lambda(:),Aop(:)],[dir,'/Aop']);
+            writecell(app.PropertiesTextArea.Value,[dir,'/props']);
         end
     end
 
