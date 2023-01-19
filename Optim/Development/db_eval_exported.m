@@ -4,8 +4,8 @@ classdef db_eval_exported < matlab.apps.AppBase
     properties (Access = public)
         UIFigure                 matlab.ui.Figure
         SnapshotButton           matlab.ui.control.Button
-        ZumEditField             matlab.ui.control.NumericEditField
-        ZumEditFieldLabel        matlab.ui.control.Label
+        ZumSpinner               matlab.ui.control.Spinner
+        ZumSpinnerLabel          matlab.ui.control.Label
         ReadDBFileButton         matlab.ui.control.Button
         PropertiesTextArea       matlab.ui.control.TextArea
         PropertiesTextAreaLabel  matlab.ui.control.Label
@@ -86,6 +86,7 @@ classdef db_eval_exported < matlab.apps.AppBase
             app.plotEfficMax = plot(app.UIAxes,app.z(I),app.effic(I),"r*");
             app.plotEfficCurrent = plot(app.UIAxes,app.z(I),app.effic(I),"g*");
             hold(app.UIAxes,"off")
+            app.ZumSpinner.Step = app.z(2)-app.z(1);
         end
 
         % Callback function: ZumSlider, ZumSlider
@@ -110,15 +111,15 @@ classdef db_eval_exported < matlab.apps.AppBase
             app.PropertiesTextArea.Value{4} = ['THz central frequency @ ',num2str(app.z(z_index)), ' um = ' num2str(sum(ATHz.*app.nu.')/sum(ATHz)), 'THz'];
             app.PropertiesTextArea.Value{5} = ['Maximum pump intensity @ ', num2str(app.z(z_index)),' = ', num2str(max(Eop)),' GW/cm^2'];
             app.PropertiesTextArea.Value{6} = ['Pump central wavelength @ ',num2str(app.z(z_index)), ' um = ' num2str(lambdaCentral), ' um'];
-            app.ZumEditField.Value = app.ZumSlider.Value;
+            app.ZumSpinner.Value = app.ZumSlider.Value;
         end
 
-        % Value changed function: ZumEditField
-        function ZumEditFieldValueChanged(app, event)
-            value = app.ZumEditField.Value;
+        % Value changed function: ZumSpinner
+        function ZumSpinnerValueChanged(app, event)
+            value = app.ZumSpinner.Value;
             app.ZumSlider.Value = value;
             ZumSliderValueChanged(app,event)
-            app.ZumEditField.Value = app.ZumSlider.Value;
+            app.ZumSpinner.Value = app.ZumSlider.Value;
         end
 
         % Button pushed function: SnapshotButton
@@ -232,16 +233,16 @@ classdef db_eval_exported < matlab.apps.AppBase
             app.ReadDBFileButton.Position = [855 36 100 23];
             app.ReadDBFileButton.Text = 'Read DB File';
 
-            % Create ZumEditFieldLabel
-            app.ZumEditFieldLabel = uilabel(app.UIFigure);
-            app.ZumEditFieldLabel.HorizontalAlignment = 'right';
-            app.ZumEditFieldLabel.Position = [678 36 44 22];
-            app.ZumEditFieldLabel.Text = 'Z  (um)';
+            % Create ZumSpinnerLabel
+            app.ZumSpinnerLabel = uilabel(app.UIFigure);
+            app.ZumSpinnerLabel.HorizontalAlignment = 'right';
+            app.ZumSpinnerLabel.Position = [678 36 44 22];
+            app.ZumSpinnerLabel.Text = 'Z  (um)';
 
-            % Create ZumEditField
-            app.ZumEditField = uieditfield(app.UIFigure, 'numeric');
-            app.ZumEditField.ValueChangedFcn = createCallbackFcn(app, @ZumEditFieldValueChanged, true);
-            app.ZumEditField.Position = [737 36 100 22];
+            % Create ZumSpinner
+            app.ZumSpinner = uispinner(app.UIFigure);
+            app.ZumSpinner.ValueChangedFcn = createCallbackFcn(app, @ZumSpinnerValueChanged, true);
+            app.ZumSpinner.Position = [737 36 100 22];
 
             % Create SnapshotButton
             app.SnapshotButton = uibutton(app.UIFigure, 'push');
