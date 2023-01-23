@@ -3,9 +3,9 @@ classdef db_eval_exported < matlab.apps.AppBase
     % Properties that correspond to app components
     properties (Access = public)
         UIFigure                 matlab.ui.Figure
-        SnapshotButton           matlab.ui.control.Button
         ZumSpinner               matlab.ui.control.Spinner
         ZumSpinnerLabel          matlab.ui.control.Label
+        SnapshotButton           matlab.ui.control.Button
         ReadDBFileButton         matlab.ui.control.Button
         PropertiesTextArea       matlab.ui.control.TextArea
         PropertiesTextAreaLabel  matlab.ui.control.Label
@@ -57,20 +57,20 @@ classdef db_eval_exported < matlab.apps.AppBase
             app.z = h5read(app.fileSTR,"/z")*1e6;
             app.t = h5read(app.fileSTR,"/t")*1e12;
             app.nu= h5read(app.fileSTR,"/nu")*1e-12;
-            app.lambda = [0,app.c0./app.nu(2:end)]*1e-6;
+            app.lambda = [Inf,app.c0./app.nu(2:end)]*1e-6;
             app.ZumSlider.Limits = [min(app.z),max(app.z)];
             app.effic = h5read(app.fileSTR,"/effic")*100;
-            app.plot1 = plot(app.UIAxes, app.z,app.effic);
+            app.plot1 = plot(app.UIAxes, app.z,app.effic,"LineWidth",2);
             [M,I] = max(app.effic);
             ETHz = h5read(app.fileSTR,"/"+num2str(app.z(I))+"/ETHz")/1e5;
             ATHz = normalize(h5read(app.fileSTR,"/"+num2str(app.z(I))+"/ATHz"),"range");
             Eop = h5read(app.fileSTR,"/"+num2str(app.z(I))+"/Eop")/1e13;
             Aop = normalize(h5read(app.fileSTR,"/"+num2str(app.z(I))+"/Aop"),"range");
-            app.plot2 = plot(app.UIAxes2,app.t,ETHz);
+            app.plot2 = plot(app.UIAxes2,app.t,ETHz,"LineWidth",2);
             xlim(app.UIAxes2,[-3,3]);
-            app.plot3 = plot(app.UIAxes3,app.nu,ATHz);
-            app.plot5 = plot(app.UIAxes5,app.t,Eop);
-            app.plot6 = plot(app.UIAxes6,app.lambda,Aop);
+            app.plot3 = plot(app.UIAxes3,app.nu,ATHz,"LineWidth",2);
+            app.plot5 = plot(app.UIAxes5,app.t,Eop,"LineWidth",2);
+            app.plot6 = plot(app.UIAxes6,app.lambda,Aop,"LineWidth",2);
             lambdaCentral = app.c0/sum(Aop(2:end).*app.nu(2:end).')*sum(Aop(2:end))*1e-6;
             xlim(app.UIAxes3,[0,5]);
             xlim(app.UIAxes5,[-3,3]);
@@ -83,8 +83,8 @@ classdef db_eval_exported < matlab.apps.AppBase
             app.PropertiesTextArea.Value{5} = ['Maximum pump intensity @ ', num2str(app.z(I)),' = ', num2str(max(Eop)),' GW/cm^2'];
             app.PropertiesTextArea.Value{6} = ['Pump central wavelength @ ',num2str(app.z(I)), ' um = ' num2str(lambdaCentral), ' um'];
             hold(app.UIAxes,"on")
-            app.plotEfficMax = plot(app.UIAxes,app.z(I),app.effic(I),"r*");
-            app.plotEfficCurrent = plot(app.UIAxes,app.z(I),app.effic(I),"g*");
+            app.plotEfficMax = plot(app.UIAxes,app.z(I),app.effic(I),"r*","LineWidth",2);
+            app.plotEfficCurrent = plot(app.UIAxes,app.z(I),app.effic(I),"k*","LineWidth",2);
             hold(app.UIAxes,"off")
             app.ZumSpinner.Step = app.z(2)-app.z(1);
         end
@@ -220,11 +220,13 @@ classdef db_eval_exported < matlab.apps.AppBase
             % Create PropertiesTextAreaLabel
             app.PropertiesTextAreaLabel = uilabel(app.UIFigure);
             app.PropertiesTextAreaLabel.HorizontalAlignment = 'right';
-            app.PropertiesTextAreaLabel.Position = [38 118 60 22];
+            app.PropertiesTextAreaLabel.FontSize = 18;
+            app.PropertiesTextAreaLabel.Position = [11 117 87 23];
             app.PropertiesTextAreaLabel.Text = 'Properties';
 
             % Create PropertiesTextArea
             app.PropertiesTextArea = uitextarea(app.UIFigure);
+            app.PropertiesTextArea.FontSize = 18;
             app.PropertiesTextArea.Position = [113 48 325 94];
 
             % Create ReadDBFileButton
@@ -232,6 +234,12 @@ classdef db_eval_exported < matlab.apps.AppBase
             app.ReadDBFileButton.ButtonPushedFcn = createCallbackFcn(app, @ReadDBFileButtonPushed, true);
             app.ReadDBFileButton.Position = [855 36 100 23];
             app.ReadDBFileButton.Text = 'Read DB File';
+
+            % Create SnapshotButton
+            app.SnapshotButton = uibutton(app.UIFigure, 'push');
+            app.SnapshotButton.ButtonPushedFcn = createCallbackFcn(app, @SnapshotButtonPushed, true);
+            app.SnapshotButton.Position = [559 35 100 23];
+            app.SnapshotButton.Text = 'Snapshot';
 
             % Create ZumSpinnerLabel
             app.ZumSpinnerLabel = uilabel(app.UIFigure);
@@ -243,12 +251,6 @@ classdef db_eval_exported < matlab.apps.AppBase
             app.ZumSpinner = uispinner(app.UIFigure);
             app.ZumSpinner.ValueChangedFcn = createCallbackFcn(app, @ZumSpinnerValueChanged, true);
             app.ZumSpinner.Position = [737 36 100 22];
-
-            % Create SnapshotButton
-            app.SnapshotButton = uibutton(app.UIFigure, 'push');
-            app.SnapshotButton.ButtonPushedFcn = createCallbackFcn(app, @SnapshotButtonPushed, true);
-            app.SnapshotButton.Position = [559 35 100 23];
-            app.SnapshotButton.Text = 'Snapshot';
 
             % Show the figure after all components are created
             app.UIFigure.Visible = 'on';
