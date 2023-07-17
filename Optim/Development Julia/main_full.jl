@@ -12,11 +12,11 @@ include("fuggvenyek_full.jl")
     c = 3e8
     lambda0 = 10.6e-6
     N = 4e4
-    tau = 2e-12
-    I0 = 80e13
+    tau = 1e-12
+    I0 = 60e13
     khi_eff = 2 * deffTHz(cry)
     e0 = 8.854e-12
-    nu0 = 1.5e12
+    nu0 = 0.5e12
     deltanu = nu0
 
     dz = 0.5e-5
@@ -98,7 +98,7 @@ include("fuggvenyek_full.jl")
             global efficSH[ii] = sum(abs.(ASH) .^ 2 .* npSH) / pF
 
             local Iop = np0 * e0 * c / 2 * abs.((ifft(Aop .* exp.(-1im * (k_omega - k_omega0) * z[ii]))) * omegaMAX) .^ 2
-            local ETHz = real((ifft(FA .* ATHz .* exp.(-1im * (k_OMEGA - k_OMEGA0) * z[ii])))) * omegaMAX
+            local ETHz = real.((ifft(FA .* ATHz .* exp.(-1im * (k_OMEGA - k_OMEGA0) * z[ii])))) * omegaMAX
             local ISH = abs.((ifft(ASH .* exp.(-1im * (k_omegaSH - k_omegaSH0) * z[ii]))) * omegaMAX) .^ 2
             DataBaseWriter(FID, z[ii], Aop, Iop, ATHz, ETHz, ASH, ISH)
             #println(ii)
