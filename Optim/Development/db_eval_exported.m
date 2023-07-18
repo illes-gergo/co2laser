@@ -60,6 +60,7 @@ classdef db_eval_exported < matlab.apps.AppBase
             app.lambda = [Inf,app.c0./app.nu(2:end)]*1e-6;
             app.ZumSlider.Limits = [min(app.z),max(app.z)];
             app.effic = h5read(app.fileSTR,"/effic")*100;
+            app.efficsh = h5read(app.fileSTR,"/efficSH")*100;
             app.plot1 = plot(app.UIAxes, app.z,app.effic,"LineWidth",2);
             [M,I] = max(app.effic);
             ETHz = h5read(app.fileSTR,"/"+num2str(app.z(I))+"/ETHz")/1e5;
@@ -129,12 +130,17 @@ classdef db_eval_exported < matlab.apps.AppBase
             ATHz = normalize(h5read(app.fileSTR,"/"+num2str(z_current)+"/ATHz"),"range");
             Eop = h5read(app.fileSTR,"/"+num2str(z_current)+"/Eop")/1e13;
             Aop = normalize(h5read(app.fileSTR,"/"+num2str(z_current)+"/Aop"),"range");
-            writematrix([app.z(:),app.effic(:)],[app.fileDirs,'/effic.txt']);
+            ESH = h5read(app.fileSTR,"/"+num2str(z_current)+"/ESH")/1e13;
+            ASH = normalize(h5read(app.fileSTR,"/"+num2str(z_current)+"/ASH"),"range");
             dir = [app.fileDirs,'/Snapshot_',num2str(z_current),'_um'];
             mkdir(dir);
+            writematrix([app.z(:),app.effic(:)],[dir,'/effic.txt']);
+            writematrix([app.z(:),app.efficsh(:)],[dir,'/efficSH.txt']);
             writematrix([app.t(:),ETHz(:)],[dir,'/ETHz']);
             writematrix([app.t(:),Eop(:)],[dir,'/Eop']);
             writematrix([app.nu(:),ATHz(:)],[dir,'/ATHz']);
+            writematrix([app.t(:),ESH(:)],[dir,'/ESH']);
+            writematrix([app.lambda(:),ASH(:)],[dir,'/ASH']);
             writematrix([app.lambda(:),Aop(:)],[dir,'/Aop']);
             writecell(app.PropertiesTextArea.Value,[dir,'/props']);
         end
