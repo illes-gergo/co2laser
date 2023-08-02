@@ -1,5 +1,7 @@
 ./Optim/Deployed/*
 *DB*
-gabit-agyfasz/*
+gabit*
 ./*.txt
 *.txt
+Optim/.nextcloudsync.log
+.sync*
