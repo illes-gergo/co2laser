@@ -3,24 +3,25 @@ using Symbolics
 using FFTW
 using DSP
 using Base.Threads
-using HDF5
+using HDF5, DelimitedFiles
 
 include("fuggvenyek_full.jl")
 @time begin
+    plotlyjs()
     cry = 4
     T = 300
     c = 3e8
-    lambda0 = 10.6e-6
+    lambda0 = 1.4e-6
     N = 4e4
-    tau = 2e-12
-    I0 = 80e13
+    tau = 1e-12
+    I0 = 60e13
     khi_eff = 2 * deffTHz(cry)
     e0 = 8.854e-12
     nu0 = 1.5e12
     deltanu = nu0
 
     dz = 0.5e-5
-    z_vegso = 8e-3
+    z_vegso = 60e-3
     z = 0:dz:z_vegso
     omega0 = 2 * pi * c / lambda0
 
@@ -87,26 +88,25 @@ include("fuggvenyek_full.jl")
 
     effic = zeros(size(z))
     efficSH = zeros(size(effic))
-    FID = h5open("DB_full-2ps-long", "w")
-    let A_loop = A_komp
-        for ii in eachindex(z)[2:end]
-            (z2, A_loop) = RK4_M(v6_fgv, dz, z[ii-1], A_loop, z[ii])
-            local ATHz = A_loop[:, 1]
-            local Aop = A_loop[:, 2]
-            local ASH = A_loop[:, 3]
-            global effic[ii] = sum(abs.(ATHz) .^ 2 .* FI) / pF
-            global efficSH[ii] = sum(abs.(ASH) .^ 2 .* npSH) / pF
 
-            local Iop = np0 * e0 * c / 2 * abs.((ifft(Aop .* exp.(-1im * (k_omega - k_omega0) * z[ii]))) * omegaMAX) .^ 2
-            local ETHz = real.((ifft(FA .* ATHz .* exp.(-1im * (k_OMEGA - k_OMEGA0) * z[ii])))) * omegaMAX
-            local ISH = abs.((ifft(ASH .* exp.(-1im * (k_omegaSH - k_omegaSH0) * z[ii]))) * omegaMAX) .^ 2
-            DataBaseWriter(FID, z[ii], Aop, Iop, ATHz, ETHz, ASH, ISH)
-            #println(ii)
-        end
-    end
+    vg = domega ./ diff(n_omega .* omega ./ c ./cos(gamma))
+    dk2 = diff(1 ./vg)
+    gvd = dk2./domega
+    display(plot(lambda .* 1e6, [vg; 0] ./ c, xlims=(1, 2), #= ylims=(0.294, 0.305) =#))
+    display(plot(lambda .* 1e6, [gvd;0;0] ./ c, xlims=(1, 2),  #= ylims=[-3,1].*1e-32 =#))
+
+    vg2 = domega ./ diff(k_omega)
+    dk22 = diff(1 ./vg2)
+    gvd2 = dk22./domega
+    display(plot(lambda .* 1e6, [vg2; 0] ./ c, xlims=(1, 2),#=  ylims=(0.2, 0.4) =#))
+    display(plot(lambda .* 1e6, [gvd2;0;0] ./ c, xlims=(1, 2),  #= ylims=[-0.75,-0.38].*1e-31 =#))
+
+    display(plot(lambda .* 1e6, [vg.-vg2; 0] ./ c, xlims=(1, 2), #= ylims=(0.294, 0.305) =#))
+    writedlm("vg-no-tilt.txt",[lambda*1e6;;[vg;0]])
+    writedlm("gvd-no-tilt.txt",[lambda*1e6;;[gvd;0;0]])
+
+    writedlm("vg-with-tilt.txt",[lambda*1e6;;[vg2;0]])
+    writedlm("gvd-with-tilt.txt",[lambda*1e6;;[gvd2;0;0]])
 end
-DataBaseEnder(FID, z, t, nu, effic, efficSH);
-close(FID);
-
 #display(plot(z, effic))
 println("Végeztem!")

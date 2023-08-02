@@ -108,10 +108,11 @@ classdef db_eval_exported < matlab.apps.AppBase
             app.plotEfficCurrent.XData = app.z(z_index);
             app.plotEfficCurrent.YData = app.effic(z_index);
             app.PropertiesTextArea.Value{2}= ['Maximum THz-field = ',num2str(max(abs(ETHz))),' kV/cm', ' @ ', num2str(app.z(z_index)), 'um'];
-            app.PropertiesTextArea.Value{3} = ['Efficiency @ ', num2str(app.z(z_index)), 'um = ', num2str(app.effic(z_index)), '%'];
-            app.PropertiesTextArea.Value{4} = ['THz central frequency @ ',num2str(app.z(z_index)), ' um = ' num2str(sum(ATHz.*app.nu.')/sum(ATHz)), 'THz'];
-            app.PropertiesTextArea.Value{5} = ['Maximum pump intensity @ ', num2str(app.z(z_index)),' = ', num2str(max(Eop)),' GW/cm^2'];
-            app.PropertiesTextArea.Value{6} = ['Pump central wavelength @ ',num2str(app.z(z_index)), ' um = ' num2str(lambdaCentral), ' um'];
+            app.PropertiesTextArea.Value{3}= ['Maximum Positive THz-field = ',num2str(max((ETHz))),' kV/cm', ' @ ', num2str(app.z(z_index)), 'um'];
+            app.PropertiesTextArea.Value{4} = ['Efficiency @ ', num2str(app.z(z_index)), 'um = ', num2str(app.effic(z_index)), '%'];
+            app.PropertiesTextArea.Value{5} = ['THz central frequency @ ',num2str(app.z(z_index)), ' um = ' num2str(sum(ATHz.*app.nu.')/sum(ATHz)), 'THz'];
+            app.PropertiesTextArea.Value{6} = ['Maximum pump intensity @ ', num2str(app.z(z_index)),' = ', num2str(max(Eop)),' GW/cm^2'];
+            app.PropertiesTextArea.Value{7} = ['Pump central wavelength @ ',num2str(app.z(z_index)), ' um = ' num2str(lambdaCentral), ' um'];
             app.ZumSpinner.Value = app.ZumSlider.Value;
         end
 

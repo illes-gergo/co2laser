@@ -70,7 +70,7 @@ function diffegy_conv(z, A_kompozit, omega, T, k_omega, k_OMEGA, k_omegaSH, khi_
         temp11 = conv(reverse(conj(Aop) .* exp.(1im .* k_omega .* z)), (Aop .* exp.(-1im * k_omega .* z)))
         temp11 = temp11[NN:end] .* exp.(1im .* k_OMEGA .* z) .* (-1 .* 1im .* khi_eff .* omega .^ 2 / 2 / c^2 ./ k_OMEGA) .* domega - 1 .* abszorpcio / 2 .* ATHz
         temp11[1] = 0
-        temp1 = temp11
+        return temp11
     end
 
     t2 = @spawn begin
@@ -81,18 +81,18 @@ function diffegy_conv(z, A_kompozit, omega, T, k_omega, k_OMEGA, k_omegaSH, khi_
         temp22 = temp22[1:NN] .* exp.(1im .* k_omega .* z)
         temp20 = -1 * n2pm - 1 * 1im * khi_eff .* omega .^ 2 / 2 / c^2 ./ k_omega .* (temp21 + temp22) .* domega
         temp20[1] = 0
-        temp23 = conv(reverse(conj(Aop) .* exp.(1im .* k_omega .* z .* cos(gamma) .^ 2)), ASH .* exp.(-1im .* k_omegaSH .* z .* cos(gamma) .^ 2)) .* domega
-        temp23 = -1 * cos(gamma) .* 1im .* deff_ .* omega .^ 2 / c^2 ./ k_omega .* temp23[NN:end] .* exp.(1im .* k_omega .* z .* cos(gamma) .^ 2)
+        temp23 = conv(reverse(conj(Aop) .* exp.(1im .* k_omega .* z)), ASH .* exp.(-1im .* k_omegaSH .* z)) .* domega
+        temp23 = -1 ./ cos(gamma) .* 1im .* deff_ .* omega .^ 2 / c^2 ./ k_omega .* temp23[NN:end] .* exp.(1im .* k_omega .* z)
         temp24 = temp20 + temp23
         temp24[1] = 0
-        temp2 = temp24
+        return temp24
     end
     t3 = @spawn begin
         #        println(threadid())
-        temp31 = conv(Aop .* exp.(-1im .* k_omega .* z * cos(gamma)^2), Aop .* exp.(-1im .* k_omega .* z * cos(gamma)^2)) * domega
-        temp31 = -1 * cos(gamma) * 1im * deff_ .* omega .^ 2 / 2 / c^2 ./ k_omega .* temp31[1:NN] .* exp.(1im .* k_omegaSH .* z .* cos(gamma) .^ 2)
+        temp31 = conv(Aop .* exp.(-1im .* k_omega .* z), Aop .* exp.(-1im .* k_omega .* z)) * domega
+        temp31 = -1 ./ cos(gamma) * 1im * deff_ .* omega .^ 2 / 2 / c^2 ./ k_omega .* temp31[1:NN] .* exp.(1im .* k_omegaSH .* z)
         temp31[1] = 0
-        temp3 = temp31
+        return temp31
     end
     return cat(fetch(t1), fetch(t2), fetch(t3), dims=2)
 end

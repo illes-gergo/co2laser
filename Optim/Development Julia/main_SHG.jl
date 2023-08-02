@@ -20,7 +20,7 @@ include("fuggvenyek_SHG.jl")
     deltanu = nu0
 
     dz = 0.5e-5
-    z_vegso = 8e-3
+    z_vegso = 60e-3
     z = 0:dz:z_vegso
     omega0 = 2 * pi * c / lambda0
 

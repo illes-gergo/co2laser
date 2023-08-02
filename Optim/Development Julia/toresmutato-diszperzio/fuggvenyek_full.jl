@@ -63,8 +63,8 @@ function diffegy_conv(z, A_kompozit, omega, T, k_omega, k_OMEGA, k_omegaSH, khi_
     Aop = A_kompozit[:, 2]
     ASH = A_kompozit[:, 3]
     NN = length(Aop)
-    At = #ifft(Aop .* exp.(-0im * (k_omega) * z) * 2 * pi * dnu * length(omega))
-    n2pm = Complex.(zeros(size(Aop)))#fft(1im * e0 * omega0 * neo(2 * pi * 3e8 / omega0, T, cry) * n2 / 2 * abs.(At) .^ 2 .* At) / dnu / 2 / pi / length(omega) .* exp.(0im .* k_omega .* z)*0
+    At = ifft(Aop .* exp.(-0im * (k_omega) * z) * 2 * pi * dnu * length(omega))
+    n2pm = fft(1im * e0 * omega0 * neo(2 * pi * 3e8 / omega0, T, cry) * n2 / 2 * abs.(At) .^ 2 .* At) / dnu / 2 / pi / length(omega) .* exp.(0im .* k_omega .* z)
     t1 = @spawn begin
         #      println(threadid())
         temp11 = conv(reverse(conj(Aop) .* exp.(1im .* k_omega .* z)), (Aop .* exp.(-1im * k_omega .* z)))
@@ -79,7 +79,7 @@ function diffegy_conv(z, A_kompozit, omega, T, k_omega, k_OMEGA, k_omegaSH, khi_
         temp21 = temp21[NN:end] .* exp.(1im .* k_omega .* z)
         temp22 = conv(Aop .* exp.(-1im .* k_omega .* z), ATHz .* exp.(-1im .* k_OMEGA .* z))
         temp22 = temp22[1:NN] .* exp.(1im .* k_omega .* z)
-        temp20 = -1 * n2pm - 1 * 1im * khi_eff .* omega .^ 2 / 2 / c^2 ./ k_omega .* (temp21 .+ temp22) .* domega
+        temp20 = -1 * n2pm - 1 * 1im * khi_eff .* omega .^ 2 / 2 / c^2 ./ k_omega .* (temp21 + temp22) .* domega
         temp20[1] = 0
         temp23 = conv(reverse(conj(Aop) .* exp.(1im .* k_omega .* z .* cos(gamma) .^ 2)), ASH .* exp.(-1im .* k_omegaSH .* z .* cos(gamma) .^ 2)) .* domega
         temp23 = -1 * cos(gamma) .* 1im .* deff_ .* omega .^ 2 / c^2 ./ k_omega .* temp23[NN:end] .* exp.(1im .* k_omega .* z .* cos(gamma) .^ 2)
