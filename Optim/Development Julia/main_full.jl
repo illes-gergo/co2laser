@@ -87,7 +87,7 @@ include("fuggvenyek_full.jl")
 
     effic = zeros(size(z))
     efficSH = zeros(size(effic))
-    FID = h5open("DB_full-2ps-long", "w")
+    FID = h5open("DB_full", "w")
     let A_loop = A_komp
         for ii in eachindex(z)[2:end]
             (z2, A_loop) = RK4_M(v6_fgv, dz, z[ii-1], A_loop, z[ii])

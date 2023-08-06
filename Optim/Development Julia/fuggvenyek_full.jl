@@ -6,7 +6,7 @@ function deffTHz(cry)
     elseif cry == 3 # GaP
         deff_ = 0
     elseif cry == 4 # GaAs
-        deff_ = 2 / sqrt(3) * 42.35e-12
+        deff_ = 2 / sqrt(3) * 86.5e-12 #2023-08-04
     elseif cry == 7 # ZnSe
         deff_ = 0
     end
@@ -113,14 +113,14 @@ end
 
 function n2value(cry)
     if cry == 4 # GaAs
-        n2_ = 5.9e-18
+        n2_ = 5.9e-18 #2023-08-04
     end
     return n2_
 end
 
 function deff(cry)
     if cry == 4 #% GaAs
-        deff_ = 65.6e-12
+        deff_ = 2/sqrt(3)*80e-12 #2023-08-04
     end
     return deff_
 end
