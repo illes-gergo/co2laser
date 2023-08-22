@@ -148,12 +148,12 @@ function er(omega, T, cry)
 end
 
 function DataBaseWriter(FID, z, Aop, Iop, ATHz, ETHz, ASH, ISH)
-    FID[string(Int(floor(z * 1e6)))*"/Aop"] = collect(abs.(Aop))
-    FID[string(Int(floor(z * 1e6)))*"/Eop"] = collect(Iop)
-    FID[string(Int(floor(z * 1e6)))*"/ATHz"] = collect(abs.(ATHz))
-    FID[string(Int(floor(z * 1e6)))*"/ETHz"] = collect(ETHz)
-    FID[string(Int(floor(z * 1e6)))*"/ASH"] = collect(abs.(ASH))
-    FID[string(Int(floor(z * 1e6)))*"/ESH"] = collect(ISH)
+    FID[string(Int(round(z * 1e6)))*"/Aop"] = collect(abs.(Aop))
+    FID[string(Int(round(z * 1e6)))*"/Eop"] = collect(Iop)
+    FID[string(Int(round(z * 1e6)))*"/ATHz"] = collect(abs.(ATHz))
+    FID[string(Int(round(z * 1e6)))*"/ETHz"] = collect(ETHz)
+    FID[string(Int(round(z * 1e6)))*"/ASH"] = collect(abs.(ASH))
+    FID[string(Int(round(z * 1e6)))*"/ESH"] = collect(ISH)
 end
 
 function DataBaseEnder(FID, z, t, nu, effic, efficSH)
