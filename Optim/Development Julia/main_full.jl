@@ -10,17 +10,17 @@ include("fuggvenyek_full.jl")
     cry = 4
     T = 300
     c = 3e8
-    lambda0 = 10.6e-6
+    lambda0 = _lambda0
     N = 4e4
-    tau = 2e-12
-    I0 = 80e13
+    tau = _tau
+    I0 = _I0
     khi_eff = 2 * deffTHz(cry)
     e0 = 8.854e-12
     nu0 = 1.5e12
     deltanu = nu0
 
-    dz = 0.5e-5
-    z_vegso = 8e-3
+    dz = _dz
+    z_vegso = _z_end
     z = 0:dz:z_vegso
     omega0 = 2 * pi * c / lambda0
 
@@ -87,7 +87,7 @@ include("fuggvenyek_full.jl")
 
     effic = zeros(size(z))
     efficSH = zeros(size(effic))
-    FID = h5open("DB_full", "w")
+    FID = h5open(_DB_name, "w")
     let A_loop = A_komp
         for ii in eachindex(z)[2:end]
             (z2, A_loop) = RK4_M(v6_fgv, dz, z[ii-1], A_loop, z[ii])

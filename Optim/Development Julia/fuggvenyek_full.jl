@@ -53,8 +53,8 @@ function nTHzo(omega, T, cry)
 end
 
 function diffegy_conv(z, A_kompozit, omega, T, k_omega, k_OMEGA, k_omegaSH, khi_eff, dnu, domega, k_omega0, omega0, gamma, cry)
-    n2 = n2value(cry)
-    deff_ = 1 * deff(cry)
+    n2 = _differential_equation == 1 || _differential_equation == 3 ? n2value(cry) : 0
+    deff_ = _differential_equation == 2 || _differential_equation == 3 ? 1 * deff(cry) : 0
     c = 3e8    #%m/s
     e0 = 8.854e-12
     abszorpcio = aTHzo(omega, T, cry)
@@ -120,7 +120,7 @@ end
 
 function deff(cry)
     if cry == 4 #% GaAs
-        deff_ = 2/sqrt(3)*80e-12 #2023-08-04
+        deff_ = 2 / sqrt(3) * 80e-12 #2023-08-04
     end
     return deff_
 end
@@ -148,12 +148,12 @@ function er(omega, T, cry)
 end
 
 function DataBaseWriter(FID, z, Aop, Iop, ATHz, ETHz, ASH, ISH)
-    FID[string(Int(floor(z*1e6)))*"/Aop"] = collect(abs.(Aop))
-    FID[string(Int(floor(z*1e6)))*"/Eop"] = collect(Iop)
-    FID[string(Int(floor(z*1e6)))*"/ATHz"] = collect(abs.(ATHz))
-    FID[string(Int(floor(z*1e6)))*"/ETHz"] = collect(ETHz)
-    FID[string(Int(floor(z*1e6)))*"/ASH"] = collect(abs.(ASH))
-    FID[string(Int(floor(z*1e6)))*"/ESH"] = collect(ISH)
+    FID[string(Int(floor(z * 1e6)))*"/Aop"] = collect(abs.(Aop))
+    FID[string(Int(floor(z * 1e6)))*"/Eop"] = collect(Iop)
+    FID[string(Int(floor(z * 1e6)))*"/ATHz"] = collect(abs.(ATHz))
+    FID[string(Int(floor(z * 1e6)))*"/ETHz"] = collect(ETHz)
+    FID[string(Int(floor(z * 1e6)))*"/ASH"] = collect(abs.(ASH))
+    FID[string(Int(floor(z * 1e6)))*"/ESH"] = collect(ISH)
 end
 
 function DataBaseEnder(FID, z, t, nu, effic, efficSH)
