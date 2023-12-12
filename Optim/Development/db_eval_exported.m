@@ -128,11 +128,11 @@ classdef db_eval_exported < matlab.apps.AppBase
         function SnapshotButtonPushed(app, event)
             z_current = app.ZumSlider.Value;
             ETHz = h5read(app.fileSTR,"/"+num2str(z_current)+"/ETHz")/1e5;
-            ATHz = normalize(h5read(app.fileSTR,"/"+num2str(z_current)+"/ATHz"),"range");
+            ATHz = h5read(app.fileSTR,"/"+num2str(z_current)+"/ATHz");
             Eop = h5read(app.fileSTR,"/"+num2str(z_current)+"/Eop")/1e13;
-            Aop = normalize(h5read(app.fileSTR,"/"+num2str(z_current)+"/Aop"),"range");
+            Aop = (h5read(app.fileSTR,"/"+num2str(z_current)+"/Aop"));
             ESH = h5read(app.fileSTR,"/"+num2str(z_current)+"/ESH")/1e13;
-            ASH = normalize(h5read(app.fileSTR,"/"+num2str(z_current)+"/ASH"),"range");
+            ASH = (h5read(app.fileSTR,"/"+num2str(z_current)+"/ASH"));
             dir = [app.fileDirs,'/Snapshot_',num2str(z_current),'_um'];
             mkdir(dir);
             writematrix([app.z(:),app.effic(:)],[dir,'/effic.txt']);
