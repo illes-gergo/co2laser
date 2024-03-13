@@ -95,10 +95,10 @@ classdef db_eval_exported < matlab.apps.AppBase
             value = event.Value;
             [~,z_index] = min(abs(app.z-value));
             app.ZumSlider.Value=app.z(z_index);
-            ETHz = h5read(app.fileSTR,"/"+num2str(app.z(z_index))+"/ETHz")/1e5;
-            ATHz = normalize(h5read(app.fileSTR,"/"+num2str(app.z(z_index))+"/ATHz"),"range");
-            Eop = h5read(app.fileSTR,"/"+num2str(app.z(z_index))+"/Eop")/1e13;
-            Aop = normalize(h5read(app.fileSTR,"/"+num2str(app.z(z_index))+"/Aop"),"range");
+            ETHz = h5read(app.fileSTR,"/"+num2str((z_index))+"/ETHz")/1e5;
+            ATHz = normalize(h5read(app.fileSTR,"/"+num2str((z_index))+"/ATHz"),"range");
+            Eop = h5read(app.fileSTR,"/"+num2str((z_index))+"/Eop")/1e13;
+            Aop = normalize(h5read(app.fileSTR,"/"+num2str((z_index))+"/Aop"),"range");
             app.plot2.YData = ETHz;
             app.plot3.YData = ATHz;
             app.plot5.YData = Eop;
